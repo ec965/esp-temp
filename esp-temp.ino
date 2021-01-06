@@ -21,33 +21,28 @@ void refresh_display(void * parameter){
     int inc=0;
     while(1){
         xSemaphoreTake(tick, portMAX_DELAY);
-        /* if (tick > 0){ */
-        /*     portENTER_CRITICAL(&timerMux); */
-        /*     tick--; */
-        /*     portEXIT_CRITICAL(&timerMux); */
-            switch (inc){
-                case 0:
-                    display.d(0);
-                    display.s(0);
-                    inc++;
-                    break;
-                case 1:
-                    display.d(1);
-                    display.s(0);
-                    inc++;
-                    break;
-                case 2:
-                    display.d(2);
-                    display.s(0);
-                    inc++;
-                    break;
-                case 3:
-                    display.d(3);
-                    display.s_c();
-                    inc=0;
-                    break;
-            }
-        /* } */
+        switch (inc){
+            case 0:
+                display.d(0);
+                display.s(0);
+                inc++;
+                break;
+            case 1:
+                display.d(1);
+                display.s(0);
+                inc++;
+                break;
+            case 2:
+                display.d(2);
+                display.s(0);
+                inc++;
+                break;
+            case 3:
+                display.d(3);
+                display.s_c();
+                inc=0;
+                break;
+        }
     }
     vTaskDelete(NULL);
 }
