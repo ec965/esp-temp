@@ -22,6 +22,7 @@ void network_init(){
 
     mqtt_client.setServer(mqtt_server, mqtt_port);
     mqtt_client.setCallback(mqtt_callback);
+    Serial.println("mqtt initialized");
     mqtt_pubq_init();
 }
 
@@ -49,7 +50,7 @@ void mqtt_reconnect() {
     while(!mqtt_client.connected()){
         Serial.print("attempting mqtt connection: ");
 
-        if (mqtt_client.connect(mqtt_client_id)){
+        if (mqtt_client.connect(mqtt_client_id, mqtt_username, mqtt_password)){
             Serial.println("connected");
             mqtt_client.subscribe(mqtt_intopic);
         } else {
@@ -65,6 +66,10 @@ void mqtt_publisher(void* parameter){
     MQTT_PUB_ITEM item;
     while(1){
         xQueueReceive(mqtt_pub_queue, &item, portMAX_DELAY);
+        Serial.print("MQTT TX topic:");
+        Serial.print(item.topic);
+        Serial.print("||payload:");
+        Serial.println(item.payload);
         mqtt_client.publish(item.topic, item.payload);
         vTaskDelay(10 / portTICK_PERIOD_MS); //wait between publishing
     }

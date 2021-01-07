@@ -12,7 +12,7 @@ extern const uint8_t digit_pins[]; // digits
 extern const uint8_t seg_pins[]; // segments
 
 // mqtt
-#define MQTTPUBQSIZE 5
+#define MQTTPUBQSIZE 10
 extern const char* mqtt_client_id; // name of this device
 extern const char* mqtt_intopic; // name of topic that this device is subbed to
 
@@ -21,3 +21,5 @@ extern const char* ssid;
 extern const char* password;
 extern const char* mqtt_server;
 extern uint16_t mqtt_port;
+extern const char* mqtt_username;
+extern const char* mqtt_password;

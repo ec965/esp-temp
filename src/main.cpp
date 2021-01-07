@@ -20,12 +20,11 @@ void setup() {
     // button
     bx_init();
 
-    xTaskCreate(mqtt_publisher, "mqtt publisher", 1000, NULL, 1, NULL);
-    xTaskCreate(refresh_display, "refresh display", 1000, NULL, 1, NULL);
+    xTaskCreate(mqtt_publisher, "mqtt publisher", 4000, NULL, 1, NULL);
+    xTaskCreate(refresh_display, "refresh display", 4000, NULL, 1, NULL);
     xTaskCreate(poll_sensor, "dht 11 polling", 4000, NULL, 1, NULL);
-    xTaskCreate(button_task, "button task", 1000, NULL, 1, NULL);
+    xTaskCreate(button_task, "button task", 4000, NULL, 1, NULL);
 }
 
 void loop() {
-    vTaskDelay(portMAX_DELAY); // suspend the idle loop
 }

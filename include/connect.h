@@ -2,12 +2,14 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
-
+#define TOPICSIZE 56
+#define PAYLOADSIZE 200
 extern PubSubClient mqtt_client;
+extern QueueHandle_t mqtt_pub_queue;
 
 typedef struct MQTT_PUB_ITEM{
-    char* topic;
-    char* payload;
+    char topic[TOPICSIZE];
+    char payload[PAYLOADSIZE];
 } MQTT_PUB_ITEM;
 
 // setup wifi
