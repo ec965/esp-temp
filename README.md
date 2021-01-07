@@ -1,13 +1,12 @@
 # esp32 thermostat
 
 ## Todo
-* display temp in farenheit
-* display humidity
 * additional leds
-* button to change tempC/tempF/humi
-* iot grab temp?
+* iot control
+* iot send temp
+* iot get temp from online
 
-## Doc
+## Documentation
 2 tasks
 
 ### DHT 11 task
@@ -32,6 +31,7 @@ characteristic | spec
 ----- | -----
 range | 0-50 degC
 tolerance | +- 2 degC
+
 ## resources
 * [4 digit 7 segment display](https://osoyoo.com/2017/08/08/arduino-lesson-4-digit-7-segment-led-display/)
 * [dht 11 esp lib](https://github.com/beegee-tokyo/DHTesp)

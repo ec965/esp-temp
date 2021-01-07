@@ -3,9 +3,8 @@
 #include "display.h"
 #include "timer.h"
 #include "dht.h"
+#include "macros.h"
 
-const uint8_t cathodes[] = {26,27,14,12}; // digits
-const uint8_t anodes[] = {21, 19, 18, 5, 17, 16, 4, 2}; // segments
 
 FourDigitSevenSegment segdisp (cathodes, anodes, COMMON_ANODE);
 

@@ -32,6 +32,8 @@ void button_task(void* parameter){
 
     while(1){
         xSemaphoreTake(bx_semaphore, portMAX_DELAY);
+
+        // debounce 100ms
         if (millis() - past_time > 100){
             Serial.println("button was pressed");
             bx_pressed=true;
