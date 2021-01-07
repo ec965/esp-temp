@@ -71,38 +71,46 @@ void FourDigitSevenSegment::s_clear(){
     }
 }
 
-void FourDigitSevenSegment::s(uint8_t n){
+void FourDigitSevenSegment::s(char n){
     switch(n){
-        case 0: 
+        case '0': 
             s_zero();
             break;
-        case 1: 
+        case '1': 
             s_one();
             break;
-        case 2: 
+        case '2': 
             s_two();
             break;
-        case 3: 
+        case '3': 
             s_three();
             break;
-        case 4: 
+        case '4': 
             s_four();
             break;
-        case 5: 
+        case '5': 
             s_five();
             break;
-        case 6: 
+        case '6': 
             s_six();
             break;
-        case 7: 
+        case '7': 
             s_seven();
             break;
-        case 8: 
+        case '8': 
             s_eight();
             break;
-        case 9: 
+        case '9': 
             s_nine();
             break;
+        case 'c':
+            s_c();
+            break;
+        case 'f':
+            s_f();
+            break;
+        default:
+            s_clear();
     }
 }
 

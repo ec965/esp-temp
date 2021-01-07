@@ -21,6 +21,8 @@ class FourDigitSevenSegment {
         void s_seven();
         void s_eight();
         void s_nine();
+        void s_c();
+        void s_f();
     public:
         FourDigitSevenSegment(const uint8_t* d, const uint8_t* s, bool common);
         // return 0 if error in init, else return 1
@@ -31,9 +33,7 @@ class FourDigitSevenSegment {
         void d(uint8_t n);
         
         void s_clear();
-        void s(uint8_t n);
-        void s_c();
-        void s_f();
+        void s(char n);
         
         void s_dot_on();
         void s_dot_off();
