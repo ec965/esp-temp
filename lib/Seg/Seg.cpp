@@ -4,19 +4,16 @@
 FourDigitSevenSegment::FourDigitSevenSegment(const uint8_t* d, const uint8_t* s, bool common){
     digit = d;
     segment = s;
-    switch (common){
-        case COMMON_CATHODE:
-            d_on=HIGH;
-            d_off=LOW;
-            s_on=LOW;
-            s_off=HIGH;
-            break;
-        case COMMON_ANODE:
-            d_on=LOW;
-            d_off=HIGH;
-            s_on=HIGH;
-            s_off=LOW;
-            break;
+    if (common) { // COMMON_CATHODE
+        d_on=HIGH;
+        d_off=LOW;
+        s_on=LOW;
+        s_off=HIGH;
+    } else { // COMMON_ANODE
+        d_on=LOW;
+        d_off=HIGH;
+        s_on=HIGH;
+        s_off=LOW;
     }
 }
         // return 0 if error in init, else return 1

@@ -2,13 +2,19 @@
 #include <Arduino.h>
 #include <Seg.h>
 
-extern FourDigitSevenSegment segdisp;
+class Display: public FourDigitSevenSegment {
+    private:
+        uint8_t digit_inc;
+        uint8_t dot_counter;
+        // helper function to show digits
+        void show_digit(uint8_t digit, char c, bool period);
+    public:
+        Display(const uint8_t* d, const uint8_t* s, bool common);
+        // parse and show dht data string
+        void display_string(char* str);
+};
+
+extern Display segdisp;
 
 // task to run segment display (varname: segdisp)
 void refresh_display(void*);
-
-// helper function to show digits
-void show_digit(uint8_t digit, char c, bool period);
-
-// parse and show dht data string
-void show_dht_data(char* str);
