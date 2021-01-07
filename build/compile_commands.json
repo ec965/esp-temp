@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/enochc/Code/esp-temp/esp-temp/build",
+  "command": "/bin/clang++-10    -g   -o CMakeFiles/esp-temp.dir/main.cpp.o -c /home/enochc/Code/esp-temp/esp-temp/main.cpp",
+  "file": "/home/enochc/Code/esp-temp/esp-temp/main.cpp"
+}
+]
