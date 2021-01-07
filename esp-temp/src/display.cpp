@@ -9,12 +9,14 @@ const uint8_t anodes[] = {21, 19, 18, 5, 17, 16, 4, 2}; // segments
 
 FourDigitSevenSegment segdisp (cathodes, anodes, COMMON_ANODE);
 
+uint8_t digit_inc; // incrementer for switching digits
+
 // refresh segdisp task
 void refresh_display(void * parameter){
-    uint8_t inc=0;
     DHT_DATA rx_data;
+    digit_inc=0;
     while(1){
-        xSemaphoreTake(tick, portMAX_DELAY);
+        xSemaphoreTake(tick_semaphore, portMAX_DELAY);
 
         if (xQueueReceive(dht_queue, &rx_data, 0) == pdTRUE){
             Serial.print("display task recieved:");
@@ -22,28 +24,7 @@ void refresh_display(void * parameter){
             Serial.print("|");
             Serial.println(rx_data.str);
         }
-        switch (inc){
-            case 0:
-                show_digit(0, rx_data.str[0], false);
-                inc++;
-                break;
-            case 1:
-                if (rx_data.str[2] == '.'){
-                    show_digit(1, rx_data.str[1], true);
-                } else {
-                    show_digit(1, rx_data.str[1], false);
-                }
-                inc++;
-                break;
-            case 2:
-                show_digit(2, rx_data.str[3], false);
-                inc++;
-                break;
-            case 3:
-                show_digit(3, rx_data.str[4], false);
-                inc=0;
-                break;
-        }
+        show_dht_data(rx_data.str);
     }
     vTaskDelete(NULL);
 }
@@ -59,3 +40,27 @@ void show_digit(uint8_t digit, char c, bool period){
     }
 }
 
+void show_dht_data(char* str){
+    switch (digit_inc){
+        case 0:
+            show_digit(0, str[0], false);
+            digit_inc++;
+            break;
+        case 1:
+            if (str[2] == '.'){
+                show_digit(1, str[1], true);
+            } else {
+                show_digit(1, str[1], false);
+            }
+            digit_inc++;
+            break;
+        case 2:
+            show_digit(2, str[3], false);
+            digit_inc++;
+            break;
+        case 3:
+            show_digit(3, str[4], false);
+            digit_inc=0;
+            break;
+    }
+}

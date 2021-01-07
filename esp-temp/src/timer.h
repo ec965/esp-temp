@@ -3,7 +3,7 @@
 #define TIMERFREQ 1600
 
 // create a binary semaphore for the tick that refreshes the display
-extern SemaphoreHandle_t tick;
+extern SemaphoreHandle_t tick_semaphore;
 // pointer to the timer
 extern hw_timer_t* timer;
 

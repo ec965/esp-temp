@@ -9,3 +9,6 @@ void refresh_display(void*);
 
 // helper function to show digits
 void show_digit(uint8_t digit, char c, bool period);
+
+// parse and show dht data string
+void show_dht_data(char* str);

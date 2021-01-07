@@ -2,13 +2,13 @@
 #include "timer.h"
 
 // create a binary semaphore for the tick that refreshes the display
-SemaphoreHandle_t tick = xSemaphoreCreateBinary();
+SemaphoreHandle_t tick_semaphore = xSemaphoreCreateBinary();
 // pointer to the timer
 hw_timer_t* timer = NULL;
 
 // timer interrupt callback to set refresh speed of 4digit7seg
 void IRAM_ATTR onTimer(){
-    xSemaphoreGiveFromISR(tick, NULL);
+    xSemaphoreGiveFromISR(tick_semaphore, NULL);
 }
 
 void timer_init(){

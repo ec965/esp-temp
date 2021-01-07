@@ -137,17 +137,17 @@ void FourDigitSevenSegment::s_h(){
     digitalWrite(segment[3], s_off);
     digitalWrite(segment[4], s_on);
     digitalWrite(segment[5], s_on);
-    digitalWrite(segment[6], s_off);
+    digitalWrite(segment[6], s_on);
 }
 
 void FourDigitSevenSegment::s_f(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_off);
     digitalWrite(segment[2], s_off);
-    digitalWrite(segment[3], s_on);
+    digitalWrite(segment[3], s_off);
     digitalWrite(segment[4], s_on);
     digitalWrite(segment[5], s_on);
-    digitalWrite(segment[6], s_off);
+    digitalWrite(segment[6], s_on);
 }
 void FourDigitSevenSegment::s_c(){
     digitalWrite(segment[0], s_on);
