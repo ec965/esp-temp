@@ -1,0 +1,5 @@
+esp-temp/.pio
+esp-temp/.vscode/.browse.c_cpp.db*
+esp-temp/.vscode/c_cpp_properties.json
+esp-temp/.vscode/launch.json
+esp-temp/.vscode/ipch

@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "seg.h"
+#include "Seg.h"
 
 FourDigitSevenSegment::FourDigitSevenSegment(const uint8_t* d, const uint8_t* s, bool common){
     digit = d;
@@ -17,18 +17,10 @@ FourDigitSevenSegment::FourDigitSevenSegment(const uint8_t* d, const uint8_t* s,
             s_on=HIGH;
             s_off=LOW;
             break;
-        default:
-            d_on=-1;
-            d_off=-1;
-            s_on=-1;
-            s_off=-1;
     }
 }
         // return 0 if error in init, else return 1
 bool FourDigitSevenSegment::init(){
-    if (d_on==-1 || d_off==-1 || s_on==-1 || s_off==-1){
-        return 0;
-    }
     uint8_t i;
     for(i=0; i<4; i++){
         pinMode(digit[i], OUTPUT);

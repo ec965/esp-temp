@@ -7,7 +7,6 @@
 // Queue from dht task to display task
 QueueHandle_t dht_queue;
 DHTesp dht;
-uint8_t data_type; // what kind of data are we sending? Celcius, Farenheit, or Humidity
 
 void poll_sensor(void* parameter){
     uint8_t data_type = TEMPC;
@@ -28,7 +27,7 @@ void poll_sensor(void* parameter){
             Serial.print(" | Humi: ");
             Serial.println(data.humidity);
 
-            enqueue_dht_data(data);
+            enqueue_dht_data(data, data_type);
 
             prev_data = data;
         } 
@@ -37,28 +36,28 @@ void poll_sensor(void* parameter){
         bool bx_queue_item;
         // uses queue timer as a delay
         if (xQueueReceive(bx_queue, &bx_queue_item, 10000 / portTICK_PERIOD_MS) == pdTRUE){
-            change_data_type();
-            enqueue_dht_data(prev_data);
+            data_type = change_data_type(data_type);
+            enqueue_dht_data(prev_data, data_type);
         }
     }
     vTaskDelete(NULL);
 }
 
-void enqueue_dht_data(TempAndHumidity data){
+void enqueue_dht_data(TempAndHumidity data, uint8_t data_type){
     DHT_DATA tx_data; //struct to hold tx data
     
     switch (data_type){
         case(TEMPC):
-            sprintf(tx_data.str, "%.*fc\0", 1, data.temperature);
+            sprintf(tx_data.str, "%.*fc", 1, data.temperature);
             tx_data.type=TEMPC;
             break;            
         case(HUMI):
-            sprintf(tx_data.str, "%.*fh\0", 1, data.humidity);
+            sprintf(tx_data.str, "%.*fh", 1, data.humidity);
             tx_data.type=HUMI;
             break;            
         case(TEMPF):
             float tempf = (data.temperature * 1.8) + 32;
-            sprintf(tx_data.str, "%.*ff\0", 1, tempf);
+            sprintf(tx_data.str, "%.*ff", 1, tempf);
             tx_data.type=TEMPF;
             break;
     }
@@ -79,7 +78,7 @@ void dht_init(){
     }
 }
 
-void change_data_type(){
+uint8_t change_data_type(uint8_t data_type){
     switch(data_type){
         case(TEMPC):
             Serial.println("dht task will now send HUMI (1) to display task");
@@ -94,4 +93,5 @@ void change_data_type(){
             data_type = TEMPC;
             break;
     }
+    return data_type;
 }

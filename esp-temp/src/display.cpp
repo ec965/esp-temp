@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "lib/seg.h"
+#include <Seg.h>
 #include "display.h"
 #include "timer.h"
 #include "dht.h"

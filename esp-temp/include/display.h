@@ -1,6 +1,6 @@
 #pragma once
 #include <Arduino.h>
-#include "lib/seg.h"
+#include <Seg.h>
 
 extern FourDigitSevenSegment segdisp;
 
