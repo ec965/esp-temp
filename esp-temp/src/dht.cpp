@@ -12,7 +12,11 @@ uint8_t data_type; // what kind of data are we sending? Celcius, Farenheit, or H
 void poll_sensor(void* parameter){
     uint8_t data_type = TEMPC;
     TempAndHumidity prev_data;
+    prev_data.temperature = 0;
+    prev_data.humidity = 0;
     
+    vTaskDelay(1000 / portTICK_PERIOD_MS); //give the sensor some time to start up
+
     while(1){
         // poll DHT11 and update temperature
         TempAndHumidity data = dht.getTempAndHumidity();
@@ -45,16 +49,16 @@ void enqueue_dht_data(TempAndHumidity data){
     
     switch (data_type){
         case(TEMPC):
-            sprintf(tx_data.str, "%.*fc", 1, data.temperature);
+            sprintf(tx_data.str, "%.*fc\0", 1, data.temperature);
             tx_data.type=TEMPC;
             break;            
         case(HUMI):
-            sprintf(tx_data.str, "%.*fh", 1, data.humidity);
+            sprintf(tx_data.str, "%.*fh\0", 1, data.humidity);
             tx_data.type=HUMI;
             break;            
         case(TEMPF):
             float tempf = (data.temperature * 1.8) + 32;
-            sprintf(tx_data.str, "%.*ff", 1, tempf);
+            sprintf(tx_data.str, "%.*ff\0", 1, tempf);
             tx_data.type=TEMPF;
             break;
     }
