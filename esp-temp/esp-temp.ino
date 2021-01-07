@@ -11,11 +11,7 @@ void setup() {
     segdisp.init();
     dht.setup(dht_pin, DHTesp::DHT11); 
     timer_init();
-    dht_queue = xQueueCreate( 1, DHTQSIZE*sizeof(char) );
- 
-    if(dht_queue == NULL){
-        Serial.println("Error creating the queue");
-    }
+    dht_queue_init();
 
     xTaskCreate(refresh_display, "refresh display", 1000, NULL, 1, NULL);
     xTaskCreate(poll_sensor, "dht 11 polling", 4000, NULL, 1, NULL);

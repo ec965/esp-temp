@@ -43,7 +43,7 @@ void poll_sensor(void* parameter){
 }
 
 void dht_queue_init(){
-    dht_queue = xQueueCreate(5, 5*sizeof(char));
+    dht_queue = xQueueCreate(QSIZE, DHTSIZE*sizeof(char));
     if (dht_queue == NULL){
         Serial.println("Error creating the queue");
         while(1);

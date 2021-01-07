@@ -109,9 +109,35 @@ void FourDigitSevenSegment::s(char n){
         case 'f':
             s_f();
             break;
+        case 'r':
+            s_r();
+            break;
+        case 'h':
+            s_h();
+            break;
         default:
             s_clear();
     }
+}
+
+void FourDigitSevenSegment::s_r(){
+    digitalWrite(segment[0], s_on);
+    digitalWrite(segment[1], s_on);
+    digitalWrite(segment[2], s_on);
+    digitalWrite(segment[3], s_off);
+    digitalWrite(segment[4], s_on);
+    digitalWrite(segment[5], s_on);
+    digitalWrite(segment[6], s_on);
+}
+
+void FourDigitSevenSegment::s_h(){
+    digitalWrite(segment[0], s_off);
+    digitalWrite(segment[1], s_on);
+    digitalWrite(segment[2], s_on);
+    digitalWrite(segment[3], s_off);
+    digitalWrite(segment[4], s_on);
+    digitalWrite(segment[5], s_on);
+    digitalWrite(segment[6], s_off);
 }
 
 void FourDigitSevenSegment::s_f(){

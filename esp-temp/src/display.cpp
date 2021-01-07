@@ -48,6 +48,7 @@ void refresh_display(void * parameter){
     vTaskDelete(NULL);
 }
 
+// helper function to show digits
 void show_digit(uint8_t digit, char c, bool period){
     segdisp.d(digit);
     segdisp.s(c);

@@ -23,6 +23,8 @@ class FourDigitSevenSegment {
         void s_nine();
         void s_c();
         void s_f();
+        void s_h();
+        void s_r()
     public:
         FourDigitSevenSegment(const uint8_t* d, const uint8_t* s, bool common);
         // return 0 if error in init, else return 1
