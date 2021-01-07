@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "DHTesp.h"
 #include "dht.h"
-#include "macros.h"
+#include "config.h"
 #include "bx.h"
 
 // Queue from dht task to display task
@@ -72,7 +72,7 @@ void enqueue_dht_data(TempAndHumidity data, uint8_t data_type){
 void dht_init(){
     dht.setup(dht_pin, DHTesp::DHT11);
 
-    dht_queue = xQueueCreate(QSIZE, DHTSIZE*sizeof(char));
+    dht_queue = xQueueCreate(SENSORQSIZE, DHTSIZE*sizeof(char));
     if (dht_queue == NULL){
         Serial.println("Error creating the dht queue");
     }

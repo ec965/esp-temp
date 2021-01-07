@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "bx.h"
-#include "macros.h"
+#include "config.h"
 
 //Queue button task to dht task
 QueueHandle_t bx_queue;
@@ -18,7 +18,7 @@ void bx_init(){
     attachInterrupt(digitalPinToInterrupt(bx_pin), onBxPress, RISING);
 
     // init the bx_queue
-    bx_queue = xQueueCreate(QSIZE, sizeof(bool));
+    bx_queue = xQueueCreate(BXQSIZE, sizeof(bool));
     if (bx_queue == NULL){
         Serial.println("Error creating the bx queue");
     }
