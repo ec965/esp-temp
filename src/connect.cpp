@@ -4,6 +4,7 @@
 #include "config.h"
 #include "connect.h"
 #include "led.h"
+#include "bx.h"
 
 WiFiClient esp_client;
 PubSubClient mqtt_client(esp_client);
@@ -28,14 +29,29 @@ void mqtt_pubq_init(){
 
 // mqtt callback, this function is run whenever a message is recieved
 void mqtt_callback(char* topic, uint8_t* message, unsigned int length){
-    int i;
+    uint8_t sensor_data_type, i;
+    String string_msg;
     Serial.print("MQTT RX\n\tTOPIC:");
     Serial.println(topic);
     Serial.print("\tPAYLOAD:");
     for(i=0; i<length; i++){
         Serial.print((char)message[i]);
+        string_msg += (char)message[i];
     }
     Serial.println();
+
+    if (string_msg == "TEMPC"){
+        sensor_data_type = TEMPC;
+    } else if (string_msg == "HUMI") {
+        sensor_data_type = HUMI;
+    } else if (string_msg == "TEMPF") {
+        sensor_data_type = TEMPF;
+    } else {
+        return;
+    }
+    Serial.print("MQTT TASK -> SENSOR TASK:");
+    Serial.println(string_msg);
+    xQueueSend(bx_queue, &sensor_data_type, 0); // don't block
 }
 
 // mqtt_reconnect will be attempted whenever the connection w/ server is lost
@@ -72,7 +88,7 @@ void mqtt_pub_task(void* parameter){
             Serial.println(item.payload);
             mqtt_client.publish(item.topic, item.payload);
         }
-        mqtt_client.loop();
+        mqtt_client.loop(); // callback loop
     }
     vTaskDelete(NULL);
 }
