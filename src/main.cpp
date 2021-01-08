@@ -21,7 +21,7 @@ void setup() {
     WiFiManager wm;
     // wm.resetSettings(); // to reset saved wifi
     bool res;
-    res = wm.autoConnect("esp32-temp-0", "password");
+    res = wm.autoConnect(mqtt_client_id, "password");
 
     if (!res){
         Serial.println("failed to connect to wifi");

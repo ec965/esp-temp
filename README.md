@@ -14,8 +14,7 @@
 * check button queue
 
 ### display task
-* refresh 4digit7seg display
-    * uses timer interrupt to refresh display
+* refresh 4digit7seg display using hardware timer interrupt
 * dequeue dht data and display
 
 ### button task
