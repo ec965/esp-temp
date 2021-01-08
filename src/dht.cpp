@@ -27,8 +27,9 @@ void poll_sensor(void* parameter){
             Serial.print(data.temperature);
             Serial.print(" | Humi: ");
             Serial.println(data.humidity);
+
             MQTT_PUB_ITEM mqtt_item;
-            sprintf(mqtt_item.topic,"dht11");
+            sprintf(mqtt_item.topic,"%s/dht11", mqtt_outtopic);
             sprintf(mqtt_item.payload, "$temp:%f;humi:%f#", data.temperature, data.temperature);
             xQueueSend(mqtt_pub_queue, &mqtt_item, portMAX_DELAY);
             enqueue_dht_data(data, data_type);

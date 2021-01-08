@@ -15,6 +15,7 @@ extern const uint8_t seg_pins[]; // segments
 #define MQTTPUBQSIZE 10
 extern const char* mqtt_client_id; // name of this device
 extern const char* mqtt_intopic; // name of topic that this device is subbed to
+extern const char* mqtt_outtopic; // name of outtopic
 
 //-----PRIVATE MACROS-----//
 extern const char* ssid;

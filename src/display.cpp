@@ -58,6 +58,7 @@ void Display::display_string(char* str){
         case 1:
             if (str[2+dot_counter] == '.'){
                 show_digit(1, str[1+dot_counter], true);
+                dot_counter++;
             } else {
                 show_digit(1, str[1+dot_counter], false);
             }
@@ -66,6 +67,7 @@ void Display::display_string(char* str){
         case 2:
             if (str[3+dot_counter] == '.'){
                 show_digit(2, str[2+dot_counter], true);
+                dot_counter++;
             } else {
                 show_digit(2, str[2+dot_counter], false);
             }
@@ -74,6 +76,7 @@ void Display::display_string(char* str){
         case 3:
             if (str[4+dot_counter] == '.'){
                 show_digit(3, str[3+dot_counter], true);
+                dot_counter++;
             } else {
                 show_digit(3, str[3+dot_counter], false);
             }

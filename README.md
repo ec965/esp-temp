@@ -6,20 +6,32 @@
 * iot send temp
 * iot get temp from online
 
-## Documentation
-2 tasks
-
-### DHT 11 task
-1. poll dht11
-2. enqueue dht data
-3. (to-do) handle isr from button to change what kind of data is enqueued
+## Tasks
+### sensor task
+* poll dht11
+* send sensor data to display task
+* send sensor data to mqtt publishing task
+* check button queue
 
 ### display task
-1. refresh 4digit7seg display
-    1. uses timer interrupt to refresh display
-2. dequeue dht data and display
+* refresh 4digit7seg display
+    * uses timer interrupt to refresh display
+* dequeue dht data and display
 
-## DHT11
+### button task
+* wait for button isr
+* if button pressed, send message via queue to sensor task to change data being send to display task
+
+### MQTT task
+* recieve messages via callback
+* reconnect
+* manage mqtt publishing message queue
+
+
+
+
+
+# DHT11
 * response time: 6s min, 10s typical, 15s max
 ### humidity
 characteristic | spec

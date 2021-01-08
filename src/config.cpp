@@ -12,6 +12,7 @@ const uint8_t seg_pins[] = {21, 19, 18, 5, 17, 16, 4, 2}; // segments
 // mqtt
 const char* mqtt_client_id = "esp32-temp"; // name of this device
 const char* mqtt_intopic = "esp32-temp/out"; // name of topic that this device is subbed to
+const char* mqtt_outtopic = "esp32-temp"; // name of topic that this device is subbed to
 
 //------PRIVATE MACROS-----//
 /*
@@ -19,4 +20,6 @@ const char* ssid = "";
 const char* password = "";
 const char* mqtt_server = "";
 uint16_t mqtt_port = ;
+const char* mqtt_username = "";
+const char* mqtt_password = "";
 */

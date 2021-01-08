@@ -39,9 +39,9 @@ void mqtt_callback(char* topic, uint8_t* message, unsigned int length){
     int i;
     Serial.print("MQTT RX TOPIC:");
     Serial.print(topic);
-    Serial.print("||MESSAGE:");
+    Serial.print("||PAYLOAD:");
     for(i=0; i<length; i++){
-        Serial.print(message[i]);
+        Serial.print((char)message[i]);
     }
 }
 
@@ -65,13 +65,17 @@ void mqtt_reconnect() {
 void mqtt_publisher(void* parameter){
     MQTT_PUB_ITEM item;
     while(1){
-        xQueueReceive(mqtt_pub_queue, &item, portMAX_DELAY);
-        Serial.print("MQTT TX topic:");
-        Serial.print(item.topic);
-        Serial.print("||payload:");
-        Serial.println(item.payload);
-        mqtt_client.publish(item.topic, item.payload);
-        vTaskDelay(10 / portTICK_PERIOD_MS); //wait between publishing
+        if (!mqtt_client.connected()){
+            mqtt_reconnect();
+        }
+        if (xQueueReceive(mqtt_pub_queue, &item, 10 / portTICK_PERIOD_MS) == pdTRUE){
+            Serial.print("MQTT TX TOPIC:");
+            Serial.print(item.topic);
+            Serial.print("||PAYLOAD:");
+            Serial.println(item.payload);
+            mqtt_client.publish(item.topic, item.payload);
+        }
+        mqtt_client.loop();
     }
     vTaskDelete(NULL);
 }
