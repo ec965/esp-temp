@@ -3,14 +3,15 @@
 #include <PubSubClient.h>
 #include "config.h"
 #include "connect.h"
+#include "led.h"
 
 WiFiClient esp_client;
 PubSubClient mqtt_client(esp_client);
 
 QueueHandle_t mqtt_pub_queue;
 
-// setup wifi and mqtt
-void network_init(){
+// may be phased out in favor of wifimanager
+void wifi_init(){
     WiFi.begin(ssid, password);
 
     Serial.print("connecting to wifi");
@@ -19,7 +20,9 @@ void network_init(){
         Serial.print('.');
     }
     Serial.println("\nconnected to wifi");
-
+}
+// setup mqtt
+void mqtt_init(){
     mqtt_client.setServer(mqtt_server, mqtt_port);
     mqtt_client.setCallback(mqtt_callback);
     Serial.println("mqtt initialized");
@@ -43,6 +46,7 @@ void mqtt_callback(char* topic, uint8_t* message, unsigned int length){
     for(i=0; i<length; i++){
         Serial.print((char)message[i]);
     }
+    Serial.println();
 }
 
 // mqtt_reconnect will be attempted whenever the connection w/ server is lost
@@ -57,7 +61,11 @@ void mqtt_reconnect() {
             Serial.print("failed, rc=");
             Serial.print(mqtt_client.state());
             Serial.println("trying again in 5 sec.");
-            vTaskDelay( 5000 / portTICK_PERIOD_MS); // don't block other tasks 
+
+            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
+            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
+            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
+            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
         }
     }
 }

@@ -13,7 +13,9 @@ typedef struct MQTT_PUB_ITEM{
 } MQTT_PUB_ITEM;
 
 // setup wifi
-void network_init();
+void wifi_init(); // may be phased out in favor of wifi manager
+// setup mqtt 
+void mqtt_init();
 // init mqtt pub queue
 void mqtt_pubq_init();
 // mqtt callback, this function is run whenever a message is recieved

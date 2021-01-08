@@ -1,6 +1,8 @@
 #pragma once
 #include <Arduino.h>
 
+extern const uint8_t onboardled_pin;
+
 #define BXQSIZE 1
 extern const uint8_t bx_pin;
 

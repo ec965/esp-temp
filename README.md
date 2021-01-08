@@ -1,9 +1,9 @@
 # esp32 thermostat
 
 ## Todo
-* additional leds
-* iot control
-* iot send temp
+* additional leds or blink onboard led? or both?
+* wifi manager for setting up wifi and mqtt
+* front end for mqtt?
 * iot get temp from online
 
 ## Tasks

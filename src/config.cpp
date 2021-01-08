@@ -1,13 +1,15 @@
 #include <Arduino.h>
 #include "config.h"
 
+const uint8_t onboardled_pin = 2;
+
 const uint8_t bx_pin = 33;
 
 const uint8_t dht_pin = 25;
 
 // 4 digit 7 segment display pins
 const uint8_t digit_pins[] = {26,27,14,12}; // digits
-const uint8_t seg_pins[] = {21, 19, 18, 5, 17, 16, 4, 2}; // segments
+const uint8_t seg_pins[] = {21, 19, 18, 5, 17, 16, 4, 15}; // segments
 
 // mqtt
 const char* mqtt_client_id = "esp32-temp"; // name of this device
