@@ -9,7 +9,7 @@
 QueueHandle_t dht_queue;
 DHTesp dht;
 
-void poll_sensor(void* parameter){
+void sensor_task(void* parameter){
     uint8_t data_type = TEMPC;
     TempAndHumidity prev_data;
     prev_data.temperature = 0;
@@ -21,27 +21,24 @@ void poll_sensor(void* parameter){
         // poll DHT11 and update temperature
         TempAndHumidity data = dht.getTempAndHumidity();
         if (dht.getStatus() != 0){
-            Serial.println("failed to get dht data");
+            Serial.println("SENSOR TASK: failed to get data");
        } else {
-            Serial.print("Temp: ");
+            Serial.print("SENSOR TASK: Temp: ");
             Serial.print(data.temperature);
             Serial.print(" | Humi: ");
             Serial.println(data.humidity);
 
             MQTT_PUB_ITEM mqtt_item;
             sprintf(mqtt_item.topic,"%s/dht11", mqtt_outtopic);
-            sprintf(mqtt_item.payload, "$temp:%f;humi:%f#", data.temperature, data.temperature);
+            sprintf(mqtt_item.payload, "$temp:%f;humi:%f#", data.temperature, data.humidity);
             xQueueSend(mqtt_pub_queue, &mqtt_item, portMAX_DELAY);
             enqueue_dht_data(data, data_type);
 
             prev_data = data;
         } 
         
-        // handle button presses
-        bool bx_queue_item;
         // uses queue timer as a delay
-        if (xQueueReceive(bx_queue, &bx_queue_item, 10000 / portTICK_PERIOD_MS) == pdTRUE){
-            data_type = change_data_type(data_type);
+        if (xQueueReceive(bx_queue, &data_type, 10000 / portTICK_PERIOD_MS) == pdTRUE){
             enqueue_dht_data(prev_data, data_type);
         }
     }
@@ -66,7 +63,7 @@ void enqueue_dht_data(TempAndHumidity data, uint8_t data_type){
             tx_data.type=TEMPF;
             break;
     }
-    Serial.print("dht task sending:");
+    Serial.print("SENSOR TASK -> DISPLAY TASK:");
     Serial.print(tx_data.type);
     Serial.print("|");
     Serial.println(tx_data.str);
@@ -79,24 +76,6 @@ void dht_init(){
 
     dht_queue = xQueueCreate(SENSORQSIZE, DHTSIZE*sizeof(char));
     if (dht_queue == NULL){
-        Serial.println("Error creating the dht queue");
+        Serial.println("SENSOR QUEUE: error creating queue");
     }
-}
-
-uint8_t change_data_type(uint8_t data_type){
-    switch(data_type){
-        case(TEMPC):
-            Serial.println("dht task will now send HUMI (1) to display task");
-            data_type = HUMI;
-            break;
-        case(HUMI):
-            Serial.println("dht task will now send TEMPF (2) to display task");
-            data_type = TEMPF;
-            break;
-        case(TEMPF):
-            Serial.println("dht task will now send TEMPC (0) to display task");
-            data_type = TEMPC;
-            break;
-    }
-    return data_type;
 }

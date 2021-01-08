@@ -18,14 +18,14 @@ void bx_init(){
     attachInterrupt(digitalPinToInterrupt(bx_pin), onBxPress, RISING);
 
     // init the bx_queue
-    bx_queue = xQueueCreate(BXQSIZE, sizeof(bool));
+    bx_queue = xQueueCreate(BXQSIZE, sizeof(uint8_t));
     if (bx_queue == NULL){
-        Serial.println("Error creating the bx queue");
+        Serial.println("BX QUEUE: error creating queue");
     }
 }
 
-void button_task(void* parameter){
-    bool bx_pressed=false;
+void bx_task(void* parameter){
+    uint8_t bx_pressed=TEMPC;
     uint32_t past_time = millis();
 
     while(1){
@@ -33,12 +33,30 @@ void button_task(void* parameter){
 
         // debounce 100ms
         if (millis() - past_time > 500){
-            Serial.println("button was pressed");
-            bx_pressed=true;
+            Serial.println("BX TASK: button was pressed");
+            bx_pressed = change_data_type(bx_pressed);
             xQueueSend(bx_queue, &bx_pressed, portMAX_DELAY);
-            bx_pressed=false;        
             past_time = millis();
         }
     }
     vTaskDelete(NULL);
+}
+
+uint8_t change_data_type(uint8_t data_type){
+    Serial.print("BX TASK -> SENSOR TASK:");
+    switch(data_type){
+        case(TEMPC):
+            Serial.println("HUMI(1)");
+            data_type = HUMI;
+            break;
+        case(HUMI):
+            Serial.println("TEMPF(2)");
+            data_type = TEMPF;
+            break;
+        case(TEMPF):
+            Serial.println("TEMPC(0)");
+            data_type = TEMPC;
+            break;
+    }
+    return data_type;
 }
