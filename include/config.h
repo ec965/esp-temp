@@ -3,11 +3,16 @@
 
 extern const uint8_t onboardled_pin;
 
-#define BXQSIZE 1
+#define BXQSIZE 2
 extern const uint8_t bx_pin;
 
-#define SENSORQSIZE 1
+// DHT11
+#define SENSORQSIZE 2
 extern const uint8_t dht_pin;
+// types of data for dht data
+#define TEMPC 0
+#define HUMI 1
+#define TEMPF 2
 
 // 4 digit 7 segment display pins
 extern const uint8_t digit_pins[]; // digits
@@ -20,8 +25,6 @@ extern const char* mqtt_intopic; // name of topic that this device is subbed to
 extern const char* mqtt_outtopic; // name of outtopic
 
 //-----PRIVATE MACROS-----//
-extern const char* ssid;
-extern const char* password;
 extern const char* mqtt_server;
 extern uint16_t mqtt_port;
 extern const char* mqtt_username;

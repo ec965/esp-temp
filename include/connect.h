@@ -1,6 +1,5 @@
 #pragma once
 #include <Arduino.h>
-#include <WiFi.h>
 #include <PubSubClient.h>
 #define TOPICSIZE 56
 #define PAYLOADSIZE 200
@@ -12,8 +11,6 @@ typedef struct MQTT_PUB_ITEM{
     char payload[PAYLOADSIZE];
 } MQTT_PUB_ITEM;
 
-// setup wifi
-void wifi_init(); // may be phased out in favor of wifi manager
 // setup mqtt 
 void mqtt_init();
 // init mqtt pub queue
@@ -23,5 +20,5 @@ void mqtt_callback(char*, uint8_t*, unsigned int);
 // mqtt_reconnect will be attempted whenever the connection w/ server is lost
 void mqtt_reconnect();
 // mqtt publishing task
-void mqtt_publisher(void* parameter);
+void mqtt_pub_task(void* parameter);
 

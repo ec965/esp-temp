@@ -9,14 +9,14 @@
 Display segdisp (digit_pins, seg_pins, COMMON_ANODE);
 
 // refresh segdisp task
-void refresh_display(void * parameter){
+void display_task(void * parameter){
     DHT_DATA rx_data;
 
     while(1){
         xSemaphoreTake(tick_semaphore, portMAX_DELAY);
 
         if (xQueueReceive(dht_queue, &rx_data, 0) == pdTRUE){
-            Serial.print("display task recieved:");
+            Serial.print("DISPLAY TASK:");
             Serial.print(rx_data.type);
             Serial.print("|");
             Serial.println(rx_data.str);

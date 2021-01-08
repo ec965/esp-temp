@@ -27,8 +27,12 @@
 * reconnect
 * manage mqtt publishing message queue
 
-
-
+## Libraries
+* Seg: 4 digit 7 segement library built for this project.
+* [WiFiManager](https://github.com/tzapu/WiFiManager): AP mode for WiFi management
+    + Manually installed due to platformio error.
+* [DHTesp](https://github.com/beegee-tokyo/DHTesp): DHT11 library for ESP32 which blocks interrupts when polling sensor.
+* [PubSubClient](https://github.com/knolleary/pubsubclient/): MQTT publishing and subscribing
 
 
 # DHT11
@@ -47,3 +51,9 @@ tolerance | +- 2 degC
 ## resources
 * [4 digit 7 segment display](https://osoyoo.com/2017/08/08/arduino-lesson-4-digit-7-segment-led-display/)
 * [dht 11 esp lib](https://github.com/beegee-tokyo/DHTesp)
+
+### mosquitto cheat sheet
+* Publish: mosquitto_pub -h <ipaddress> -m "<message>" -t <topic>
+* Subscribe: mosquitto_sub -h <ipaddress> -t <topic>
+
+__#__ is a wild card.

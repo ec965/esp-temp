@@ -10,17 +10,6 @@ PubSubClient mqtt_client(esp_client);
 
 QueueHandle_t mqtt_pub_queue;
 
-// may be phased out in favor of wifimanager
-void wifi_init(){
-    WiFi.begin(ssid, password);
-
-    Serial.print("connecting to wifi");
-    while (WiFi.status() != WL_CONNECTED){
-        delay(500);
-        Serial.print('.');
-    }
-    Serial.println("\nconnected to wifi");
-}
 // setup mqtt
 void mqtt_init(){
     mqtt_client.setServer(mqtt_server, mqtt_port);
@@ -40,9 +29,9 @@ void mqtt_pubq_init(){
 // mqtt callback, this function is run whenever a message is recieved
 void mqtt_callback(char* topic, uint8_t* message, unsigned int length){
     int i;
-    Serial.print("MQTT RX TOPIC:");
-    Serial.print(topic);
-    Serial.print("||PAYLOAD:");
+    Serial.print("MQTT RX\n\tTOPIC:");
+    Serial.println(topic);
+    Serial.print("\tPAYLOAD:");
     for(i=0; i<length; i++){
         Serial.print((char)message[i]);
     }
@@ -70,16 +59,16 @@ void mqtt_reconnect() {
     }
 }
 
-void mqtt_publisher(void* parameter){
+void mqtt_pub_task(void* parameter){
     MQTT_PUB_ITEM item;
     while(1){
         if (!mqtt_client.connected()){
             mqtt_reconnect();
         }
         if (xQueueReceive(mqtt_pub_queue, &item, 10 / portTICK_PERIOD_MS) == pdTRUE){
-            Serial.print("MQTT TX TOPIC:");
-            Serial.print(item.topic);
-            Serial.print("||PAYLOAD:");
+            Serial.print("MQTT TX\n\tTOPIC:");
+            Serial.println(item.topic);
+            Serial.print("\tPAYLOAD:");
             Serial.println(item.payload);
             mqtt_client.publish(item.topic, item.payload);
         }

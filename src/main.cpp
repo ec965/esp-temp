@@ -11,10 +11,12 @@
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("Init display");
+    Serial.println("Initializing...");
     
     pinMode(onboardled_pin, OUTPUT);
     digitalWrite(onboardled_pin, HIGH);
+
+    // setup wifi
     WiFi.mode(WIFI_STA);
     WiFiManager wm;
     // wm.resetSettings(); // to reset saved wifi
@@ -40,10 +42,10 @@ void setup() {
     // button
     bx_init();
 
-    xTaskCreate(mqtt_publisher, "mqtt publisher", 4000, NULL, 1, NULL);
-    xTaskCreate(refresh_display, "refresh display", 4000, NULL, 1, NULL);
-    xTaskCreate(poll_sensor, "dht 11 polling", 4000, NULL, 1, NULL);
-    xTaskCreate(button_task, "button task", 4000, NULL, 1, NULL);
+    xTaskCreate(mqtt_pub_task, "mqtt publisher", 4000, NULL, 1, NULL);
+    xTaskCreate(display_task, "refresh display", 4000, NULL, 1, NULL);
+    xTaskCreate(sensor_task, "dht 11 polling", 4000, NULL, 1, NULL);
+    xTaskCreate(bx_task, "button task", 4000, NULL, 1, NULL);
 }
 
 void loop() {

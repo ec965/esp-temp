@@ -17,4 +17,4 @@ class Display: public FourDigitSevenSegment {
 extern Display segdisp;
 
 // task to run segment display (varname: segdisp)
-void refresh_display(void*);
+void display_task(void*);
