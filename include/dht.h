@@ -3,7 +3,7 @@
 #include "DHTesp.h"
 
 // size of the string in dht_data struct 
-#define DHTSIZE 5
+#define DHTSIZE 6 // strings are normally: "16.5C\0" which is 6 chars
 
 // struct for dht queue data
 typedef struct dht_data{

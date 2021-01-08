@@ -28,12 +28,15 @@ void sensor_task(void* parameter){
             Serial.print(" | Humi: ");
             Serial.println(data.humidity);
 
+            // publish sensor reading to MQTT
             MQTT_PUB_ITEM mqtt_item;
             sprintf(mqtt_item.topic,"%s/dht11", mqtt_outtopic);
             sprintf(mqtt_item.payload, "$temp:%f;humi:%f#", data.temperature, data.humidity);
             xQueueSend(mqtt_pub_queue, &mqtt_item, portMAX_DELAY);
+            
+            // send dht data to display
             enqueue_dht_data(data, data_type);
-
+            // save the data in case we change display data before another sensor read is called
             prev_data = data;
         } 
         
