@@ -3,11 +3,11 @@
 
 extern const uint8_t onboardled_pin;
 
-#define BXQSIZE 2
+#define BXQSIZE 5
 extern const uint8_t bx_pin;
 
 // DHT11
-#define SENSORQSIZE 2
+#define SENSORQSIZE 5
 extern const uint8_t dht_pin;
 // types of data for dht data
 #define TEMPC 0
@@ -17,6 +17,11 @@ extern const uint8_t dht_pin;
 // 4 digit 7 segment display pins
 extern const uint8_t digit_pins[]; // digits
 extern const uint8_t seg_pins[]; // segments
+
+// led pins
+extern const uint8_t redled_pin;
+extern const uint8_t blueled_pin;
+extern const uint8_t greenled_pin;
 
 // mqtt
 #define MQTTPUBQSIZE 10

@@ -20,3 +20,7 @@ void cycle_led(uint8_t pwm_channel, uint32_t duration){
         vTaskDelay( (duration/2) / 255 );
     }
 }
+
+void led_task(void * parameter){
+    vTaskDelete(NULL);
+}

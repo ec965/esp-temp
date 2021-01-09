@@ -9,9 +9,11 @@
 QueueHandle_t dht_queue;
 DHTesp dht;
 
+
 void sensor_task(void* parameter){
     uint8_t data_type = TEMPC;
     TempAndHumidity prev_data;
+    ComfortState cf;
     prev_data.temperature = 0;
     prev_data.humidity = 0;
     
@@ -22,11 +24,16 @@ void sensor_task(void* parameter){
         TempAndHumidity data = dht.getTempAndHumidity();
         if (dht.getStatus() != 0){
             Serial.println("SENSOR TASK: failed to get data");
-       } else {
-            Serial.print("SENSOR TASK: Temp: ");
-            Serial.print(data.temperature);
-            Serial.print(" | Humi: ");
+        } else {
+            // get the comfort level
+            float cr = dht.getComfortRatio(cf, data.temperature, data.humidity);
+
+            Serial.print("SENSOR TASK\n\tTemp:");
+            Serial.println(data.temperature);
+            Serial.print("\tHumi: ");
             Serial.println(data.humidity);
+            Serial.print("\tComfort Status:");
+            Serial.println(cf);
 
             // publish sensor reading to MQTT
             MQTT_PUB_ITEM mqtt_item;

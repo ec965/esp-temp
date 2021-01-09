@@ -67,10 +67,8 @@ void mqtt_reconnect() {
             Serial.print(mqtt_client.state());
             Serial.println("trying again in 5 sec.");
 
-            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
-            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
-            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
-            blink_led(onboardled_pin, 1250 / portTICK_PERIOD_MS);
+            blink_led(onboardled_pin, 1000 / portTICK_PERIOD_MS);
+            vTaskDelay(4000 / portTICK_PERIOD_MS);
         }
     }
 }

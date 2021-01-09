@@ -16,6 +16,13 @@ void setup() {
     pinMode(onboardled_pin, OUTPUT);
     digitalWrite(onboardled_pin, HIGH);
 
+    // pinMode(redled_pin, OUTPUT);
+    // pinMode(greenled_pin, OUTPUT);
+    // pinMode(blueled_pin, OUTPUT);
+    // digitalWrite(redled_pin, HIGH);
+    // digitalWrite(blueled_pin, HIGH);
+    // digitalWrite(greenled_pin, HIGH);
+
     // setup wifi
     WiFi.mode(WIFI_STA);
     WiFiManager wm;
@@ -25,15 +32,13 @@ void setup() {
 
     if (!res){
         Serial.println("failed to connect to wifi");
-        while(1){
-            blink_led(onboardled_pin, 2000 / portTICK_PERIOD_MS);
-        }
     } else {
         Serial.println("wifi connected");
         digitalWrite(onboardled_pin, LOW);
+        mqtt_init();
+        xTaskCreate(mqtt_pub_task, "mqtt publisher", 4000, NULL, 1, NULL);
     }
 
-    mqtt_init();
     // display
     segdisp.init();
     timer_init();
@@ -42,7 +47,6 @@ void setup() {
     // button
     bx_init();
 
-    xTaskCreate(mqtt_pub_task, "mqtt publisher", 4000, NULL, 1, NULL);
     xTaskCreate(display_task, "refresh display", 4000, NULL, 1, NULL);
     xTaskCreate(sensor_task, "dht 11 polling", 4000, NULL, 1, NULL);
     xTaskCreate(bx_task, "button task", 4000, NULL, 1, NULL);

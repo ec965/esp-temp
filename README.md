@@ -1,10 +1,11 @@
 # esp32 thermostat
 
+![handsoldered_board](pics/board.jpg)
+
 ## Todo
-* additional leds or blink onboard led? or both?
-* wifi manager for setting up wifi and mqtt
-* front end for mqtt?
-* iot get temp from online
+* program leds according to comfort state
+* wifi manager for setting up mqtt
+* calibrate DHT11
 
 ## Tasks
 ### sensor task
@@ -21,10 +22,23 @@
 * wait for button isr
 * if button pressed, send message via queue to sensor task to change data being send to display task
 
+*_(bx = button)_
+
 ### MQTT task
 * recieve messages via callback
+    * enqueue messages to sensor task to change data being displayed on display task
 * reconnect
 * manage mqtt publishing message queue
+
+## Queues
+* dht_queue: SENSOR TASK -> DISPLAY TASK
+    - used to send data to display
+* bx_queue: BX TASK -> SENSOR_TASK
+    - MQTT TASK -> SENSOR TASK
+    - used to change what data type is being sent to display
+* mqtt_pub_queue: SENSOR TASK -> MQTT TASK
+    - used to publish sensor data over MQTT
+
 
 ## Libraries
 * Seg: 4 digit 7 segement library built for this project.
