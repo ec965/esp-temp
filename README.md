@@ -7,6 +7,23 @@
 * wifi manager for setting up mqtt
 * calibrate DHT11
 
+## MQTT Topics and Payloads
+* `esp32-temp/out/#`: topics this device is subscribed to
+    - `esp32-temp/out/dht11`: change the display data type
+        + `TEMPC`: show Celcius
+        + `TEMPF`: show Farenheit
+        + `HUMI`: show hummidity
+    - `esp32-temp/out/blink`: toggle the led blink when reconnecting to MQTT on the device
+        + `ON`: turn on led blink when devices is disconnected from MQTT
+        + `OFF`: turn off led blink when device is disconnected from MQTT
+* `esp32-temp/in/#`: topics this device publishes to
+    - `esp-temp/in/dht11`
+        + publishes a string with the current temperature and humidity in the format: `$temp:<temperature>;humi:<humidity>#`
+        + publishes an acknowledgment if the display data is changed
+            + if display is changed to `TEMPC`, sends back `DISPLAYING:TEMPC`
+    - `esp-temp/in/blink`
+        + publishes an acknowledgement if the blink setting is changed, response is either `ON` or `OFF`
+
 ## Tasks
 ### sensor task
 * poll dht11

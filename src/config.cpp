@@ -18,7 +18,7 @@ const uint8_t greenled_pin = 26;
 
 // mqtt
 const char* mqtt_client_id = "esp32-temp-0"; // name of this device
-const char* mqtt_intopic = "esp32-temp/out"; // name of topic that this device is subbed to
+const char* mqtt_intopic = "esp32-temp/out/#"; // name of topic that this device is subbed to
 const char* mqtt_outtopic = "esp32-temp/in"; // name of topic that this device publishes to
 
 //------PRIVATE MACROS-----//

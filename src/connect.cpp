@@ -11,6 +11,8 @@ PubSubClient mqtt_client(esp_client);
 
 QueueHandle_t mqtt_pub_queue;
 
+bool reconnect_blink = false;
+
 // setup mqtt
 void mqtt_init(){
     mqtt_client.setServer(mqtt_server, mqtt_port);
@@ -40,35 +42,59 @@ void mqtt_callback(char* topic, uint8_t* message, unsigned int length){
     }
     Serial.println();
 
-    if (string_msg == "TEMPC"){
-        sensor_data_type = TEMPC;
-    } else if (string_msg == "HUMI") {
-        sensor_data_type = HUMI;
-    } else if (string_msg == "TEMPF") {
-        sensor_data_type = TEMPF;
-    } else {
-        return;
+    if (strcmp(topic, "esp32-temp/out/dht11") == 0){
+        if (string_msg == "TEMPC"){
+            sensor_data_type = TEMPC;
+        } else if (string_msg == "HUMI") {
+            sensor_data_type = HUMI;
+        } else if (string_msg == "TEMPF") {
+            sensor_data_type = TEMPF;
+        }
+        
+        // send acknowledgment
+        MQTT_PUB_ITEM ack;
+        sprintf(ack.topic, "%s/dht11", mqtt_outtopic);
+        sprintf(ack.payload, "DISPLAYING:%s", string_msg.c_str());
+        xQueueSend(mqtt_pub_queue, &ack, 0);
+
+        Serial.print("MQTT TASK -> SENSOR TASK:");
+        Serial.println(string_msg);
+        xQueueSend(bx_queue, &sensor_data_type, 0); // don't block
     }
-    Serial.print("MQTT TASK -> SENSOR TASK:");
-    Serial.println(string_msg);
-    xQueueSend(bx_queue, &sensor_data_type, 0); // don't block
+    else if (strcmp(topic, "esp32-temp/out/blink") == 0){
+        if (string_msg == "OFF"){
+            reconnect_blink = false;
+        } else if (string_msg == "ON"){
+            reconnect_blink = true;
+        }
+        // send acknowledgment
+        MQTT_PUB_ITEM ack;
+        sprintf(ack.topic, "%s/blink", mqtt_outtopic);
+        sprintf(ack.payload, "BLINK:%s", string_msg.c_str());
+        xQueueSend(mqtt_pub_queue, &ack, 0);
+    }
 }
 
 // mqtt_reconnect will be attempted whenever the connection w/ server is lost
 void mqtt_reconnect() {
     while(!mqtt_client.connected()){
-        Serial.print("attempting mqtt connection: ");
+        Serial.println("MQTT TASK:");
+        Serial.print("\tattempting mqtt connection: ");
 
         if (mqtt_client.connect(mqtt_client_id, mqtt_username, mqtt_password)){
-            Serial.println("connected");
+            Serial.println("\tconnected");
             mqtt_client.subscribe(mqtt_intopic);
         } else {
-            Serial.print("failed, rc=");
-            Serial.print(mqtt_client.state());
-            Serial.println("trying again in 5 sec.");
-
-            blink_led(onboardled_pin, 1000 / portTICK_PERIOD_MS);
-            vTaskDelay(4000 / portTICK_PERIOD_MS);
+            Serial.print("\tfailed, rc=");
+            Serial.println(mqtt_client.state());
+            Serial.println("\ttrying again in 5 sec.");
+            
+            if (reconnect_blink){
+                blink_led(onboardled_pin, 1000 / portTICK_PERIOD_MS);
+                vTaskDelay(4000 / portTICK_PERIOD_MS);
+            } else {
+                vTaskDelay(5000 / portTICK_PERIOD_MS);
+            }
         }
     }
 }
