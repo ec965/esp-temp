@@ -11,7 +11,7 @@ DHTesp dht;
 
 
 void sensor_task(void* parameter){
-    uint8_t data_type = TEMPC;
+    uint8_t data_type = TEMPF;
     TempAndHumidity prev_data;
     ComfortState cf;
     prev_data.temperature = 0;
