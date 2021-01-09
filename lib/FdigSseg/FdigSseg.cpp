@@ -1,7 +1,7 @@
 #include <Arduino.h>
-#include "Seg.h"
+#include "FdigSseg.h"
 
-FourDigitSevenSegment::FourDigitSevenSegment(const uint8_t* d, const uint8_t* s, bool common){
+Seg::Seg(const uint8_t* d, const uint8_t* s, bool common){
     digit = d;
     segment = s;
     if (common) { // COMMON_CATHODE
@@ -17,7 +17,7 @@ FourDigitSevenSegment::FourDigitSevenSegment(const uint8_t* d, const uint8_t* s,
     }
 }
         // return 0 if error in init, else return 1
-bool FourDigitSevenSegment::init(){
+bool Seg::init(){
     uint8_t i;
     for(i=0; i<4; i++){
         pinMode(digit[i], OUTPUT);
@@ -29,19 +29,19 @@ bool FourDigitSevenSegment::init(){
 }
 
 //-----DIGIT-----
-void FourDigitSevenSegment::d_all(){
+void Seg::d_all(){
     uint8_t i;
     for(i=0; i<4; i++){
         digitalWrite(digit[i], d_on);
     }
 }
-void FourDigitSevenSegment::d_clear(){
+void Seg::d_clear(){
     uint8_t i;
     for(i=0; i<4; i++){
         digitalWrite(digit[i], d_off);
     }
 }
-void FourDigitSevenSegment::d(uint8_t n){
+void Seg::d(uint8_t n){
     for(uint8_t i=0; i<4; i++){
         if (i == n){
             digitalWrite(digit[n], d_on);
@@ -53,14 +53,14 @@ void FourDigitSevenSegment::d(uint8_t n){
 
 //------SEGMENT-----
 
-void FourDigitSevenSegment::s_clear(){
+void Seg::s_clear(){
     uint8_t i;
     for(i=0; i<8; i++){
         digitalWrite(segment[i], s_off);
     }
 }
 
-void FourDigitSevenSegment::s(char n){
+void Seg::s(char n){
     switch(n){
         case '0': 
             s_zero();
@@ -98,18 +98,37 @@ void FourDigitSevenSegment::s(char n){
         case 'f':
             s_f();
             break;
-        case 'r':
-            s_r();
+        case 'a':
+            s_a();
             break;
         case 'h':
             s_h();
+            break;
+        case '-':
+            s_dash();
             break;
         default:
             s_clear();
     }
 }
+void Seg::segment_on(uint8_t seg){
+    digitalWrite(segment[seg], s_on);
+}
+void Seg::segment_off(uint8_t seg){
+    digitalWrite(segment[seg], s_off);
+}
 
-void FourDigitSevenSegment::s_r(){
+void Seg::s_dash(){
+    digitalWrite(segment[0], s_off);
+    digitalWrite(segment[1], s_off);
+    digitalWrite(segment[2], s_off);
+    digitalWrite(segment[3], s_off);
+    digitalWrite(segment[4], s_off);
+    digitalWrite(segment[5], s_off);
+    digitalWrite(segment[6], s_on);
+}
+
+void Seg::s_a(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -119,7 +138,7 @@ void FourDigitSevenSegment::s_r(){
     digitalWrite(segment[6], s_on);
 }
 
-void FourDigitSevenSegment::s_h(){
+void Seg::s_h(){
     digitalWrite(segment[0], s_off);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -129,7 +148,7 @@ void FourDigitSevenSegment::s_h(){
     digitalWrite(segment[6], s_on);
 }
 
-void FourDigitSevenSegment::s_f(){
+void Seg::s_f(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_off);
     digitalWrite(segment[2], s_off);
@@ -138,7 +157,7 @@ void FourDigitSevenSegment::s_f(){
     digitalWrite(segment[5], s_on);
     digitalWrite(segment[6], s_on);
 }
-void FourDigitSevenSegment::s_c(){
+void Seg::s_c(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_off);
     digitalWrite(segment[2], s_off);
@@ -148,7 +167,7 @@ void FourDigitSevenSegment::s_c(){
     digitalWrite(segment[6], s_off);
 }
 
-void FourDigitSevenSegment::s_zero(){
+void Seg::s_zero(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -157,7 +176,7 @@ void FourDigitSevenSegment::s_zero(){
     digitalWrite(segment[5], s_on);
     digitalWrite(segment[6], s_off);
 }
-void FourDigitSevenSegment::s_one(){
+void Seg::s_one(){
     digitalWrite(segment[0], s_off);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -166,7 +185,7 @@ void FourDigitSevenSegment::s_one(){
     digitalWrite(segment[5], s_off);
     digitalWrite(segment[6], s_off);
 }
-void FourDigitSevenSegment::s_two(){
+void Seg::s_two(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_off);
@@ -175,7 +194,7 @@ void FourDigitSevenSegment::s_two(){
     digitalWrite(segment[5], s_off);
     digitalWrite(segment[6], s_on);
 }
-void FourDigitSevenSegment::s_three(){
+void Seg::s_three(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -184,7 +203,7 @@ void FourDigitSevenSegment::s_three(){
     digitalWrite(segment[5], s_off);
     digitalWrite(segment[6], s_on);
 }
-void FourDigitSevenSegment::s_four(){
+void Seg::s_four(){
     digitalWrite(segment[0], s_off);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -193,7 +212,7 @@ void FourDigitSevenSegment::s_four(){
     digitalWrite(segment[5], s_on);
     digitalWrite(segment[6], s_on);
 }
-void FourDigitSevenSegment::s_five(){
+void Seg::s_five(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_off);
     digitalWrite(segment[2], s_on);
@@ -202,7 +221,7 @@ void FourDigitSevenSegment::s_five(){
     digitalWrite(segment[5], s_on);
     digitalWrite(segment[6], s_on);
 }
-void FourDigitSevenSegment::s_six(){
+void Seg::s_six(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_off);
     digitalWrite(segment[2], s_on);
@@ -211,7 +230,7 @@ void FourDigitSevenSegment::s_six(){
     digitalWrite(segment[5], s_on);
     digitalWrite(segment[6], s_on);
 }
-void FourDigitSevenSegment::s_seven(){
+void Seg::s_seven(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -220,7 +239,7 @@ void FourDigitSevenSegment::s_seven(){
     digitalWrite(segment[5], s_off);
     digitalWrite(segment[6], s_off);
 }
-void FourDigitSevenSegment::s_eight(){
+void Seg::s_eight(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -229,7 +248,7 @@ void FourDigitSevenSegment::s_eight(){
     digitalWrite(segment[5], s_on);
     digitalWrite(segment[6], s_on);
 }
-void FourDigitSevenSegment::s_nine(){
+void Seg::s_nine(){
     digitalWrite(segment[0], s_on);
     digitalWrite(segment[1], s_on);
     digitalWrite(segment[2], s_on);
@@ -239,9 +258,69 @@ void FourDigitSevenSegment::s_nine(){
     digitalWrite(segment[6], s_on);
 }
 
-void FourDigitSevenSegment::s_dot_on(){
+void Seg::s_dot_on(){
     digitalWrite(segment[7], s_on);
 }
-void FourDigitSevenSegment::s_dot_off(){
+void Seg::s_dot_off(){
     digitalWrite(segment[7], s_off);
+}
+
+//-----DISPLAY-----//
+FdigSseg::FdigSseg(const uint8_t* d, const uint8_t* s, bool common)
+    :Seg(d,s,common)
+{
+    digit_inc=0;
+    dot_counter=0;
+}
+
+void FdigSseg::show_digit(uint8_t digit, char c, bool period){
+    d(digit);
+    s(c);
+    if (period){
+        s_dot_on();
+    } else {
+        s_dot_off();
+    }
+}
+
+void FdigSseg::display_string(char* str){
+    switch (digit_inc){
+        case 0:
+            if (str[1] == '.'){
+                show_digit(0, str[0], true);
+                dot_counter++;
+            } else {
+                show_digit(0, str[0], false);
+            }
+            digit_inc++;
+            break;
+        case 1:
+            if (str[2+dot_counter] == '.'){
+                show_digit(1, str[1+dot_counter], true);
+                dot_counter++;
+            } else {
+                show_digit(1, str[1+dot_counter], false);
+            }
+            digit_inc++;
+            break;
+        case 2:
+            if (str[3+dot_counter] == '.'){
+                show_digit(2, str[2+dot_counter], true);
+                dot_counter++;
+            } else {
+                show_digit(2, str[2+dot_counter], false);
+            }
+            digit_inc++;
+            break;
+        case 3:
+            if (str[4+dot_counter] == '.'){
+                show_digit(3, str[3+dot_counter], true);
+                dot_counter++;
+            } else {
+                show_digit(3, str[3+dot_counter], false);
+            }
+            digit_inc=0;
+            dot_counter=0;
+            break;
+    }
 }
