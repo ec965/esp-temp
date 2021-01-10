@@ -8,7 +8,10 @@ extern const uint8_t bx_pin;
 
 // DHT11
 #define SENSORQSIZE 5
+#define STARTINGDT TEMPF // starting data type
 extern const uint8_t dht_pin;
+extern const float temp_calibration;
+extern const float humi_calibration;
 // types of data for dht data
 #define TEMPC 0
 #define HUMI 1

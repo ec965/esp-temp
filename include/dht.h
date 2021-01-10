@@ -13,6 +13,8 @@ typedef struct dht_data{
 
 // queue for dht data
 extern QueueHandle_t dht_queue;
+// queue for comfort ratio: data goes to led task
+extern QueueHandle_t comfort_queue; // comfort ratio
 
 extern DHTesp dht;
 

@@ -3,9 +3,7 @@
 ![handsoldered_board](pics/board.jpg)
 
 ## Todo
-* program leds according to comfort state
 * wifi manager for setting up mqtt
-* calibrate DHT11
 
 ## MQTT Topics and Payloads
 * `esp32-temp/out/#`: topics this device is subscribed to
@@ -47,6 +45,11 @@
 * reconnect
 * manage mqtt publishing message queue
 
+### led task
+* changes leds based on the comfort level
+    - gets comfort level from the sensor task
+    - peeks at the display queue to sync the segment display with the leds
+
 ## Queues
 * dht_queue: SENSOR TASK -> DISPLAY TASK
     - used to send data to display
@@ -55,6 +58,8 @@
     - used to change what data type is being sent to display
 * mqtt_pub_queue: SENSOR TASK -> MQTT TASK
     - used to publish sensor data over MQTT
+* comfort_queue: SENSOR TASK -> LED TASK
+    - used to send comfort data to the led task
 
 
 ## Libraries

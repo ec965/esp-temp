@@ -12,16 +12,10 @@
 void setup() {
     Serial.begin(115200);
     Serial.println("Initializing...");
+    // setup pinmodes for leds
+    led_init();
     
-    pinMode(onboardled_pin, OUTPUT);
     digitalWrite(onboardled_pin, HIGH);
-
-    // pinMode(redled_pin, OUTPUT);
-    // pinMode(greenled_pin, OUTPUT);
-    // pinMode(blueled_pin, OUTPUT);
-    // digitalWrite(redled_pin, HIGH);
-    // digitalWrite(blueled_pin, HIGH);
-    // digitalWrite(greenled_pin, HIGH);
 
     // setup wifi
     WiFi.mode(WIFI_STA);
@@ -50,6 +44,7 @@ void setup() {
     xTaskCreate(display_task, "refresh display", 4000, NULL, 1, NULL);
     xTaskCreate(sensor_task, "dht 11 polling", 4000, NULL, 1, NULL);
     xTaskCreate(bx_task, "button task", 4000, NULL, 1, NULL);
+    xTaskCreate(led_task, "led task", 4000, NULL, 1, NULL);
 }
 
 void loop() {

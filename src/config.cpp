@@ -6,6 +6,8 @@ const uint8_t onboardled_pin = 2;
 const uint8_t bx_pin = 33;
 
 const uint8_t dht_pin = 13;
+const float temp_calibration= -1.6;
+const float  humi_calibration = 18;
 
 // 4 digit 7 segment display pins
 const uint8_t digit_pins[] = {14, 4, 16, 5}; // digits
