@@ -40,7 +40,7 @@ void sensor_task(void* parameter){
             MQTT_PUB_ITEM mqtt_item;
             sprintf(mqtt_item.topic,"%s/dht11", mqtt_outtopic);
             sprintf(mqtt_item.payload, "$temp:%f;humi:%f#", data.temperature, data.humidity);
-            Serial.print("SENSOR TASK -> mqtt_pub_queue -> MQTT TASK:");
+            Serial.println("SENSOR TASK -> mqtt_pub_queue -> MQTT TASK:");
             Serial.print("\tTOPIC:");
             Serial.println(mqtt_item.topic);
             Serial.print("\tPAYLOAD");
