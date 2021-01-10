@@ -35,8 +35,9 @@ void led_task(void* parameter){
     ComfortState comfort;
     DHT_DATA display_data;
     while(1){
-        xQueueReceive(comfort_queue, &comfort, 0);
-        xQueuePeek(dht_queue, &display_data, 0);
+        // in the sensor task, dht_queue is activated first
+        xQueuePeek(dht_queue, &display_data, portMAX_DELAY);
+        xQueueReceive(comfort_queue, &comfort, portMAX_DELAY);
         switch(comfort) {
             case Comfort_OK:
                 only_green();

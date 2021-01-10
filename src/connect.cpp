@@ -11,7 +11,7 @@ PubSubClient mqtt_client(esp_client);
 
 QueueHandle_t mqtt_pub_queue;
 
-bool reconnect_blink = false;
+bool reconnect_blink = true;
 
 // setup mqtt
 void mqtt_init(){

@@ -88,7 +88,10 @@ tolerance | +- 2 degC
 * [dht 11 esp lib](https://github.com/beegee-tokyo/DHTesp)
 
 ### mosquitto cheat sheet
-* Publish: mosquitto_pub -h <ipaddress> -m "<message>" -t <topic>
-* Subscribe: mosquitto_sub -h <ipaddress> -t <topic>
+* Publish: `mosquitto_pub -h <ipaddress> -m "<message>" -t <topic>`
+* Subscribe: `mosquitto_sub -h <ipaddress> -t <topic>`
+* Starting a server: `mosquitto -c /etc/mosquitto/mosquitto.conf -v`
+    - `-c`: specify config file
+    - `-v`: verbose
 
 __#__ is a wild card.

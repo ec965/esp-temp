@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mosquitto_sub -h 192.168.1.30 -t esp32-temp/# -u enoch -P well50 
