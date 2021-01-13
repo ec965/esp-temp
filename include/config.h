@@ -1,6 +1,11 @@
 #pragma once
 #include <Arduino.h>
 
+extern SemaphoreHandle_t serial_semaphore;
+// lock the serial port so serial writes don't overwrite each other
+#define SERIALTAKE if (xSemaphoreTake(serial_semaphore, (TickType_t) 5) == pdTRUE){
+#define SERIALGIVE xSemaphoreGive(serial_semaphore); }
+
 extern const uint8_t onboardled_pin;
 
 #define BXQSIZE 5
@@ -27,7 +32,7 @@ extern const uint8_t blueled_pin;
 extern const uint8_t greenled_pin;
 
 // mqtt
-#define MQTTPUBQSIZE 10
+#define MQTTPUBQSIZE 20
 extern const char* mqtt_client_id; // name of this device
 extern const char* mqtt_intopic; // name of topic that this device is subbed to
 extern const char* mqtt_outtopic; // name of outtopic

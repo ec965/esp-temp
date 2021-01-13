@@ -11,7 +11,18 @@
 
 void setup() {
     Serial.begin(115200);
+
+    if (serial_semaphore == NULL){
+        serial_semaphore = xSemaphoreCreateBinary();
+        if (serial_semaphore != NULL) {
+            xSemaphoreGive(serial_semaphore);
+        } else {
+            Serial.println("Error initializing the serial semaphore, expect errors on the serial port");
+        }
+    }
+    // we don't need to take the serial semaphore until we begin multitasking
     Serial.println("Initializing...");
+
     // setup pinmodes for leds
     led_init();
     

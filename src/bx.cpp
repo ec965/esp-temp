@@ -33,7 +33,9 @@ void bx_task(void* parameter){
 
         // debounce 100ms
         if (millis() - past_time > 500){
+            SERIALTAKE
             Serial.println("BX TASK: button was pressed");
+            SERIALGIVE
             bx_pressed = change_data_type(bx_pressed);
             xQueueSend(bx_queue, &bx_pressed, portMAX_DELAY);
             past_time = millis();
@@ -43,6 +45,7 @@ void bx_task(void* parameter){
 }
 
 uint8_t change_data_type(uint8_t data_type){
+    SERIALTAKE
     Serial.print("BX TASK -> SENSOR TASK:");
     switch(data_type){
         case(TEMPC):
@@ -58,5 +61,6 @@ uint8_t change_data_type(uint8_t data_type){
             data_type = TEMPC;
             break;
     }
+    SERIALGIVE
     return data_type;
 }

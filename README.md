@@ -23,6 +23,8 @@
         + publishes an acknowledgement if the blink setting is changed, response is either `ON` or `OFF`
 
 ## Tasks
+There is a mutex for the serial port, usable with macros `SERIALTAKE` and `SERIALGIVE`.
+
 ### sensor task
 * poll dht11
 * send sensor data to display task

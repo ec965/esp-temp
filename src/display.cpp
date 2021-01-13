@@ -15,10 +15,13 @@ void display_task(void * parameter){
         xSemaphoreTake(tick_semaphore, portMAX_DELAY);
 
         if (xQueueReceive(dht_queue, &rx_data, 0) == pdTRUE){
-            Serial.print("DISPLAY TASK:");
-            Serial.print(rx_data.type);
-            Serial.print("|");
-            Serial.println(rx_data.str);
+            if (xSemaphoreTake(serial_semaphore, (TickType_t) 5) == pdTRUE){
+                Serial.print("DISPLAY TASK:");
+                Serial.print(rx_data.type);
+                Serial.print("|");
+                Serial.println(rx_data.str);
+                xSemaphoreGive(serial_semaphore);
+            }
         }
         segdisp.display_string(rx_data.str);
     }

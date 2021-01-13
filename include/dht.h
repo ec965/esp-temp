@@ -21,6 +21,8 @@ extern DHTesp dht;
 // task to poll DHT11 sensor and send data to display
 void sensor_task(void* paramater);
 
-void enqueue_dht_data(TempAndHumidity data, uint8_t data_type);
+void enqueue_dht_for_display(TempAndHumidity data, uint8_t data_type);
+
+void enqueue_dht_for_mqtt(float data, const char* unit, const char* topic);
 
 void dht_init();

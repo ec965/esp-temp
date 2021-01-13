@@ -33,9 +33,11 @@ void mqtt_pubq_init(){
 void mqtt_callback(char* topic, uint8_t* message, unsigned int length){
     uint8_t sensor_data_type, i;
     String string_msg;
+    SERIALTAKE
     Serial.print("MQTT RX\n\tTOPIC:");
     Serial.println(topic);
     Serial.print("\tPAYLOAD:");
+    SERIALGIVE
     for(i=0; i<length; i++){
         Serial.print((char)message[i]);
         string_msg += (char)message[i];
@@ -78,16 +80,22 @@ void mqtt_callback(char* topic, uint8_t* message, unsigned int length){
 // mqtt_reconnect will be attempted whenever the connection w/ server is lost
 void mqtt_reconnect() {
     while(!mqtt_client.connected()){
+        SERIALTAKE
         Serial.println("MQTT TASK:");
         Serial.print("\tattempting mqtt connection: ");
+        SERIALGIVE
 
         if (mqtt_client.connect(mqtt_client_id, mqtt_username, mqtt_password)){
+            SERIALTAKE
             Serial.println("\tconnected");
+            SERIALGIVE
             mqtt_client.subscribe(mqtt_intopic);
         } else {
+            SERIALTAKE
             Serial.print("\tfailed, rc=");
             Serial.println(mqtt_client.state());
             Serial.println("\ttrying again in 5 sec.");
+            SERIALGIVE
             
             if (reconnect_blink){
                 blink_led(onboardled_pin, 1000 / portTICK_PERIOD_MS);
@@ -106,10 +114,12 @@ void mqtt_pub_task(void* parameter){
             mqtt_reconnect();
         }
         if (xQueueReceive(mqtt_pub_queue, &item, 10 / portTICK_PERIOD_MS) == pdTRUE){
+            SERIALTAKE
             Serial.print("MQTT TX\n\tTOPIC:");
             Serial.println(item.topic);
             Serial.print("\tPAYLOAD:");
             Serial.println(item.payload);
+            SERIALGIVE
             mqtt_client.publish(item.topic, item.payload);
         }
         mqtt_client.loop(); // callback loop
