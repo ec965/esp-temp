@@ -7,4 +7,5 @@
 
 # my project
 src/private_config.cpp
+sbin/
 bin/
